@@ -1,0 +1,13 @@
+# Secrets
+.env
+
+# Database and logs
+data/database.db
+data/logs/
+data/cookies.txt
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/

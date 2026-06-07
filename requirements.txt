@@ -1,0 +1,24 @@
+# Core
+requests
+python-dotenv
+
+# Music
+yt-dlp
+
+# Vision
+mediapipe
+opencv-python
+face-recognition
+
+# Voice
+pyaudio
+openwakeword
+
+# Gemini
+google-generativeai
+
+# Display
+pygame
+
+# Camera
+picamera2
