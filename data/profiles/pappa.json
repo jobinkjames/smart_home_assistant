@@ -1,0 +1,18 @@
+{
+  "name": "Pappa",
+  "role": "father",
+  "language": "ml",
+  "style": "respectful,friendly",
+  "interests": ["cricket", "news", "family"],
+  "schedule": {
+    "weekdays": "work",
+    "sunday": "free"
+  },
+  "preferences": {
+    "sport": "cricket",
+    "language": "ml"
+  },
+  "greet_style": "respectful,friendly,father-like",
+  "avoid": ["slang_heavy", "eng_heavy"],
+  "last_summary": ""
+}

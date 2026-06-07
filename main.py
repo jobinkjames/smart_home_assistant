@@ -1,9 +1,11 @@
 """
-main.py — updated with vision session integrated
+main.py — updated with recorder + gemini wired in
 """
 
 import os
+import time
 import cv2
+import threading
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -11,41 +13,68 @@ load_dotenv()
 from music.queue_manager import QueueManager
 from music import player
 from voice.wake_word import WakeWordDetector
+from voice.recorder import Recorder
 from vision.vision_session import VisionSession
-
+from assistant.gemini_client import GeminiClient
+from assistant.prompt_builder import build_system_prompt, save_summary
 
 # ── Shared state ──────────────────────────────────────────
 detector = None
-vision   = VisionSession()
+vision = VisionSession()
+recorder = Recorder()
+client = GeminiClient()
 
 
 # ── Wake word callback ────────────────────────────────────
 
+
 def on_wake_word():
+    # run everything in a new thread so wake_word callback returns immediately
+    threading.Thread(target=_handle_session, daemon=True).start()
+
+
+def _handle_session():
     print("\n[main] Wake word detected!")
 
     was_playing = player.is_playing()
     if was_playing:
         player.pause()
 
-    # ── Vision: capture frame → detect person + activity ──
-    # On Pi: replace cv2.VideoCapture with picamera2 in hardware/camera.py
-    cap   = cv2.VideoCapture(0)
+    time.sleep(0.5)  # give mic time to release after wake word
+
+    # face + pose
+    time.sleep(1.0)
+    cap = cv2.VideoCapture(0)
     ret, frame = cap.read()
     cap.release()
 
     vision_result = {"person": "Unknown", "activity": "unknown"}
     if ret:
-        frame_rgb    = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         vision_result = vision.run(frame_rgb)
 
-    print(f"[main] Person: {vision_result['person']} | "
-          f"Activity: {vision_result['activity']}")
+    system_prompt = build_system_prompt(vision_result)
+    client.start_session(system_prompt)
 
-    # ── TODO: pass vision_result to prompt_builder ────────
-    # ── TODO: recorder.record() → audio bytes ────────────
-    # ── TODO: gemini_client.send(audio, vision_result) ───
-    # ── TODO: speaker.speak(response) ────────────────────
+    print("[main] Conversation started.")
+    while True:
+        wav_bytes = recorder.record()
+        if not wav_bytes:
+            break
+
+        response = client.send(wav_bytes)
+        if not response:
+            break
+
+        print(f"\n🤖 Nova: {response}\n")
+
+        lower = response.lower()
+        if any(w in lower for w in ["bye", "goodbye", "see you", "നന്ദി", "ശരി"]):
+            break
+
+    summary = client.end_session()
+    if summary and vision_result["person"] != "Unknown":
+        save_summary(vision_result["person"], summary)
 
     if was_playing:
         player.resume()
@@ -54,6 +83,7 @@ def on_wake_word():
 
 
 # ── Main ──────────────────────────────────────────────────
+
 
 def main():
     global detector
@@ -65,7 +95,9 @@ def main():
 
     queue = QueueManager()
 
-    print("\nCommands: play <song> | pause | resume | stop | next | prev | queue | quit")
+    print(
+        "\nCommands: play <song> | pause | resume | stop | next | prev | queue | quit"
+    )
 
     while True:
         try:

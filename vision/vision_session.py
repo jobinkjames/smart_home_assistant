@@ -27,6 +27,7 @@ On PC:
 import time
 import numpy as np
 
+
 from vision.face_detector import FaceDetector
 from vision.pose_detector import PoseDetector
 
@@ -52,10 +53,10 @@ class VisionSession:
             dict with person, confidence, activity, timestamp
         """
         result = {
-            "person":     "Unknown",
+            "person": "Unknown",
             "confidence": 0.0,
-            "activity":   "unknown",
-            "timestamp":  time.strftime("%H:%M:%S"),
+            "activity": "unknown",
+            "timestamp": time.strftime("%H:%M:%S"),
         }
 
         try:
@@ -65,7 +66,7 @@ class VisionSession:
 
             # ── Face detection ────────────────────────────────────────────
             face_result = self._face.detect(frame_rgb)
-            result["person"]     = face_result["person"]
+            result["person"] = face_result["person"]
             result["confidence"] = face_result["confidence"]
 
             # ── Pose detection ────────────────────────────────────────────

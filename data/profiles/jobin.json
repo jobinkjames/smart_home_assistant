@@ -1,0 +1,19 @@
+{
+  "name": "Jobin",
+  "role": "son",
+  "language": "ml",
+  "style": "casual",
+  "interests": ["tech", "music", "cricket"],
+  "schedule": {
+    "weekdays": "work",
+    "weekend": "free"
+  },
+  "preferences": {
+    "music": "varied",
+    "sport": "cricket",
+    "language": "ml+en_mix"
+  },
+  "greet_style": "casual,friendly,ml+english_mix",
+  "avoid": ["formal_tone", "over_polite"],
+  "last_summary": ""
+}

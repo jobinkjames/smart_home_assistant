@@ -1,0 +1,17 @@
+{
+  "name": "Pappamma",
+  "role": "grandma",
+  "language": "ml",
+  "style": "gentle,slow",
+  "interests": ["family", "home", "prayer", "grandchildren"],
+  "schedule": {
+    "all": "home"
+  },
+  "preferences": {
+    "lang": "ml_simple",
+    "topics": "family,health,food,grandkids"
+  },
+  "greet_style": "gentle,slow,simple",
+  "avoid": ["en", "tech", "fast", "slang"],
+  "last_summary": ""
+}

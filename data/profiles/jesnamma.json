@@ -1,0 +1,18 @@
+{
+  "name": "Jesnamma",
+  "role": "daughter",
+  "language": "ml",
+  "style": "funny,playful",
+  "interests": ["movies", "web_series", "entertainment"],
+  "schedule": {
+    "weekdays": "busy",
+    "sunday": "free"
+  },
+  "preferences": {
+    "entertainment": "movies+web_series",
+    "language": "ml_fun"
+  },
+  "greet_style": "funny,playful,teasing",
+  "avoid": ["formal_tone", "serious_questions"],
+  "last_summary": ""
+}
