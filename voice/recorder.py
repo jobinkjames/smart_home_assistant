@@ -25,7 +25,7 @@ SILENCE_TIMEOUT = 1.5  # seconds of silence = end of speech
 SILENCE_THRESHOLD = 1000  # RMS energy below this = silence
 # raise if background is noisy
 # lower if mic is too sensitive
-MIC_INDEX = 4  # None = system default
+MIC_INDEX = 6 # None = system default
 # ─────────────────────────────────────────────────────────
 
 
